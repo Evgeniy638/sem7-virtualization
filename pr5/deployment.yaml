@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subbotin-e-v-ikbo-01-19
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+      - name: subbotin-e-v-ikbo-01-19-container
+        image: subbotin-e-v-ikbo-01-19-obraz:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
