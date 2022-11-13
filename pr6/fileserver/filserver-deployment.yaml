@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fileserver
+  name: fileserver
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fileserver
+  template:
+    metadata:
+      labels:
+        app: fileserver
+    spec:
+      containers:
+        - image: evgenua/sem7-virt-static-files:v1.0
+          imagePullPolicy: Always
+          name: fileserver
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          resources:
+            limits:
+              cpu: "1.0"
+              memory: "1G"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: evgenua/journal-server:v1.0
+          imagePullPolicy: Always
+          name: frontend
+          volumeMounts:
+            - name: passwd-volume
+              readOnly: true
+              mountPath: "/etc/redis-passwd"
+          env:
+            - name: JOURNAL_ENTRIES
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: journalEntries
+          resources:
+            limits:
+              cpu: "1.0"
+              memory: "1G"
+      volumes:
+        - name: passwd-volume
+          secret:
+            secretName: redis-passwd
