@@ -16,7 +16,8 @@ spec:
         app: frontend
     spec:
       containers:
-        - image: evgenua/journal-server:v1.0
+        # - image: evgenua/journal-server:v1.0
+        - image: brendanburns/journal-server:latest
           imagePullPolicy: Always
           name: frontend
           volumeMounts:

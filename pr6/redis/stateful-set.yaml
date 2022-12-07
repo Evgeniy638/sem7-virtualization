@@ -22,17 +22,25 @@ spec:
             - containerPort: 6379
               name: redis
           volumeMounts:
-            - name: data
-              mountPath: /data
             - name: script
               mountPath: /script/launch.sh
               subPath: launch.sh
             - name: passwd-volume
               mountPath: /etc/redis-passwd
-          command:
-            - sh
-            - -c
-            - /script/launch.sh
+          command: ["sh", "-c", "/script/launch.sh"]
+          # command:
+          #   - sh
+          #   - "-c"
+          #   - |
+          #     set -ex
+          #     PASSWORD=$(cat /etc/redis-passwd/password)
+
+          #     if [[ "${HOSTNAME}" == "redis-0" ]]; then
+          #       redis-server --requirepass ${PASSWORD}
+          #     else
+          #       redis-server --slaveof redis-0.redis 6379 --masterauth ${PASSWORD}
+          #       --requirepass ${PASSWORD}
+          #     fi
       volumes:
         - name: script
           configMap:
@@ -45,7 +53,7 @@ spec:
     - metadata:
         name: data
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 1Gi
